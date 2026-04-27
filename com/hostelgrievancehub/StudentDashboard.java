@@ -24,13 +24,13 @@ import java.util.List;
 import com.hostelgrievancehub.controller.StaffController;
 
 // Commented out JFreeChart imports to avoid compilation errors in headless environment
-// import org.jfree.chart.ChartFactory;
-// import org.jfree.chart.ChartPanel;
-// import org.jfree.chart.JFreeChart;
-// import org.jfree.chart.plot.PiePlot;
-// import org.jfree.chart.plot.PlotOrientation;
-// import org.jfree.data.category.DefaultCategoryDataset;
-// import org.jfree.data.general.DefaultPieDataset;
+import org.jfree.chart.ChartFactory;
+import org.jfree.chart.ChartPanel;
+import org.jfree.chart.JFreeChart;
+import org.jfree.chart.plot.PiePlot;
+import org.jfree.chart.plot.PlotOrientation;
+import org.jfree.data.category.DefaultCategoryDataset;
+import org.jfree.data.general.DefaultPieDataset;
 
 public class StudentDashboard extends JFrame {
     private Student student;
@@ -322,30 +322,24 @@ public class StudentDashboard extends JFrame {
         analyticsContent.setBackground(Color.WHITE);
         analyticsContent.setBorder(new EmptyBorder(20, 20, 20, 20));
 
-        // Pie chart for status distribution (commented out due to JFreeChart issues)
+        // Pie chart for status distribution
         JPanel pieChartPanel = new JPanel(new BorderLayout());
         pieChartPanel.setBackground(Color.WHITE);
         pieChartPanel.setBorder(BorderFactory.createTitledBorder("📊 Your Status Distribution"));
-        // JFreeChart pieChart = createStudentStatusPieChart();
-        // ChartPanel pieChartPanelComponent = new ChartPanel(pieChart);
-        // pieChartPanelComponent.setPreferredSize(new Dimension(400, 300));
-        // pieChartPanel.add(pieChartPanelComponent, BorderLayout.CENTER);
-        JLabel piePlaceholder = new JLabel("Charts unavailable in headless mode", SwingConstants.CENTER);
-        piePlaceholder.setFont(new Font("Segoe UI", Font.PLAIN, 16));
-        pieChartPanel.add(piePlaceholder, BorderLayout.CENTER);
+        JFreeChart pieChart = createStudentStatusPieChart();
+        ChartPanel pieChartPanelComponent = new ChartPanel(pieChart);
+        pieChartPanelComponent.setPreferredSize(new Dimension(400, 300));
+        pieChartPanel.add(pieChartPanelComponent, BorderLayout.CENTER);
         analyticsContent.add(pieChartPanel);
 
-        // Bar chart for monthly trends (commented out due to JFreeChart issues)
+        // Bar chart for monthly trends
         JPanel barChartPanel = new JPanel(new BorderLayout());
         barChartPanel.setBackground(Color.WHITE);
         barChartPanel.setBorder(BorderFactory.createTitledBorder("📈 Your Monthly Trends"));
-        // JFreeChart barChart = createStudentMonthlyBarChart();
-        // ChartPanel barChartPanelComponent = new ChartPanel(barChart);
-        // barChartPanelComponent.setPreferredSize(new Dimension(400, 300));
-        // barChartPanel.add(barChartPanelComponent, BorderLayout.CENTER);
-        JLabel barPlaceholder = new JLabel("Charts unavailable in headless mode", SwingConstants.CENTER);
-        barPlaceholder.setFont(new Font("Segoe UI", Font.PLAIN, 16));
-        barChartPanel.add(barPlaceholder, BorderLayout.CENTER);
+        JFreeChart barChart = createStudentMonthlyBarChart();
+        ChartPanel barChartPanelComponent = new ChartPanel(barChart);
+        barChartPanelComponent.setPreferredSize(new Dimension(400, 300));
+        barChartPanel.add(barChartPanelComponent, BorderLayout.CENTER);
         analyticsContent.add(barChartPanel);
 
         analyticsPanel.add(analyticsContent, BorderLayout.CENTER);
@@ -581,55 +575,55 @@ public class StudentDashboard extends JFrame {
     }
 
     // Commented out chart creation methods due to JFreeChart issues in headless environment
-    // private JFreeChart createStudentStatusPieChart() {
-    //     DefaultPieDataset dataset = new DefaultPieDataset();
-    //     try {
-    //         List<Complaint> complaints = complaintDAO.getComplaintsByStudent(student.getId());
-    //         int pending = 0, ongoing = 0, resolved = 0, escalated = 0;
-    //         for (Complaint c : complaints) {
-    //             switch (c.getStatus()) {
-    //                 case "Pending": pending++; break;
-    //                 case "Ongoing": ongoing++; break;
-    //                 case "Resolved": resolved++; break;
-    //                 case "Escalated": escalated++; break;
-    //             }
-    //         }
-    //         dataset.setValue("Pending", pending);
-    //         dataset.setValue("Ongoing", ongoing);
-    //         dataset.setValue("Resolved", resolved);
-    //         dataset.setValue("Escalated", escalated);
-    //     } catch (Exception e) {
-    //         e.printStackTrace();
-    //     }
-    //     JFreeChart chart = ChartFactory.createPieChart("Your Complaint Status Distribution", dataset, true, true, false);
-    //     PiePlot plot = (PiePlot) chart.getPlot();
-    //     plot.setSectionPaint("Pending", new Color(255, 193, 7));
-    //     plot.setSectionPaint("Ongoing", new Color(23, 162, 184));
-    //     plot.setSectionPaint("Resolved", new Color(34, 139, 34));
-    //     plot.setSectionPaint("Escalated", new Color(220, 53, 69));
-    //     return chart;
-    // }
+    private JFreeChart createStudentStatusPieChart() {
+        DefaultPieDataset dataset = new DefaultPieDataset();
+        try {
+            List<Complaint> complaints = complaintDAO.getComplaintsByStudent(student.getId());
+            int pending = 0, ongoing = 0, resolved = 0, escalated = 0;
+            for (Complaint c : complaints) {
+                switch (c.getStatus()) {
+                    case "Pending": pending++; break;
+                    case "Ongoing": ongoing++; break;
+                    case "Resolved": resolved++; break;
+                    case "Escalated": escalated++; break;
+                }
+            }
+            dataset.setValue("Pending", pending);
+            dataset.setValue("Ongoing", ongoing);
+            dataset.setValue("Resolved", resolved);
+            dataset.setValue("Escalated", escalated);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        JFreeChart chart = ChartFactory.createPieChart("Your Complaint Status Distribution", dataset, true, true, false);
+        PiePlot plot = (PiePlot) chart.getPlot();
+        plot.setSectionPaint("Pending", new Color(255, 193, 7));
+        plot.setSectionPaint("Ongoing", new Color(23, 162, 184));
+        plot.setSectionPaint("Resolved", new Color(34, 139, 34));
+        plot.setSectionPaint("Escalated", new Color(220, 53, 69));
+        return chart;
+    }
 
-    // private JFreeChart createStudentMonthlyBarChart() {
-    //     DefaultCategoryDataset dataset = new DefaultCategoryDataset();
-    //     try {
-    //         List<Complaint> complaints = complaintDAO.getComplaintsByStudent(student.getId());
-    //         // Simple monthly aggregation (last 6 months)
-    //         for (int i = 5; i >= 0; i--) {
-    //             final int currentMonth = (java.time.LocalDate.now().getMonthValue() - i + 12) % 12;
-    //             final int finalMonth = currentMonth == 0 ? 12 : currentMonth;
-    //             String monthName = java.time.Month.of(finalMonth).name().substring(0, 3);
-    //             long count = complaints.stream()
-    //                 .filter(c -> c.getCreatedAt() != null &&
-    //                     java.time.LocalDate.ofInstant(c.getCreatedAt().toInstant(), java.time.ZoneId.systemDefault()).getMonthValue() == finalMonth)
-    //                 .count();
-    //             dataset.addValue(count, "Complaints", monthName);
-    //         }
-    //     } catch (Exception e) {
-    //         e.printStackTrace();
-    //     }
-    //     return ChartFactory.createBarChart("Your Monthly Complaint Trends", "Month", "Count", dataset, PlotOrientation.VERTICAL, false, true, false);
-    // }
+    private JFreeChart createStudentMonthlyBarChart() {
+        DefaultCategoryDataset dataset = new DefaultCategoryDataset();
+        try {
+            List<Complaint> complaints = complaintDAO.getComplaintsByStudent(student.getId());
+            // Simple monthly aggregation (last 6 months)
+            for (int i = 5; i >= 0; i--) {
+                final int currentMonth = (java.time.LocalDate.now().getMonthValue() - i + 12) % 12;
+                final int finalMonth = currentMonth == 0 ? 12 : currentMonth;
+                String monthName = java.time.Month.of(finalMonth).name().substring(0, 3);
+                long count = complaints.stream()
+                    .filter(c -> c.getCreatedAt() != null &&
+                        java.time.LocalDate.ofInstant(c.getCreatedAt().toInstant(), java.time.ZoneId.systemDefault()).getMonthValue() == finalMonth)
+                    .count();
+                dataset.addValue(count, "Complaints", monthName);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return ChartFactory.createBarChart("Your Monthly Complaint Trends", "Month", "Count", dataset, PlotOrientation.VERTICAL, false, true, false);
+    }
 
     private void loadStudentAnalyticsData(JPanel totalPanel, JPanel resolvedPanel, JPanel pendingPanel, JPanel ongoingPanel, JPanel escalatedPanel) {
         try {

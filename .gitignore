@@ -1,0 +1,17 @@
+# Java
+*.class
+
+# Log files
+*.log
+
+# Project specific
+mysql_data/
+bin/
+build/
+.settings/
+.project
+.classpath
+
+# Windows junk
+Thumbs.db
+Desktop.ini
